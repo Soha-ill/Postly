@@ -5,7 +5,7 @@ import {UserContext} from "./UserContext";
 export default function Header() {
   const {setUserInfo,userInfo} = useContext(UserContext);
   useEffect(() => {
-    fetch('http://localhost:4000/profile', {
+    fetch(`${process.env.REACT_APP_API_URL}/profile`, {
       credentials: 'include',
     }).then(response => {
       response.json().then(userInfo => {
@@ -15,7 +15,7 @@ export default function Header() {
   }, []);
 
   function logout() {
-    fetch('http://localhost:4000/logout', {
+    fetch(`${process.env.REACT_APP_API_URL}/logout`, {
       credentials: 'include',
       method: 'POST',
     });
@@ -31,7 +31,9 @@ export default function Header() {
         {username && (
           <>
             <Link to="/create">Create new post</Link>
-            <a onClick={logout}>Logout ({username})</a>
+            <button onClick={logout} className="logout-btn" type="button" style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0, font: 'inherit' }}>
+              Logout ({username})
+            </button>
           </>
         )}
         {!username && (

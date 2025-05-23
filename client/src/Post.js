@@ -7,7 +7,7 @@ export default function Post({_id, title, summary, cover, coverUrl, createdAt, a
       <div className="image">
         <Link to={`/post/${_id}`}>
           <img 
-            src={coverUrl || `http://localhost:4000/uploads/${cover}`} 
+            src={coverUrl || `${process.env.REACT_APP_API_URL}/uploads/${cover}`} 
             alt={title}
             style={{
               width: '100%',

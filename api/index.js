@@ -47,7 +47,7 @@ const uploadMiddleware = multer({
 
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000',
+  origin: 'https://postly-kappa.vercel.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -66,7 +66,7 @@ app.get('/uploads-test', (req, res) => {
 });
 
 // Serve static files from the uploads directory
-app.use('/uploads', express.static(uploadsDir));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // Connect to MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/blog-app', {
@@ -282,7 +282,7 @@ app.get('/post', async (req,res) => {
     const postsWithImageUrls = posts.map(post => {
       const postObject = post.toObject();
       if (postObject.cover) {
-        postObject.coverUrl = `http://localhost:4000/uploads/${postObject.cover}`;
+        postObject.coverUrl = `${process.env.REACT_APP_API_URL}/uploads/${postObject.cover}`;
       }
       return postObject;
     });
@@ -304,7 +304,7 @@ app.get('/post/:id', async (req, res) => {
     }
     const postObject = post.toObject();
     if (postObject.cover) {
-      postObject.coverUrl = `http://localhost:4000/uploads/${postObject.cover}`;
+      postObject.coverUrl = `${process.env.REACT_APP_API_URL}/uploads/${postObject.cover}`;
     }
     res.json(postObject);
   } catch (error) {
@@ -320,6 +320,6 @@ app.get('/', (req, res) => {
 
 // Start the server
 app.listen(4000, () => {
-  console.log('Server started on http://localhost:4000');
+  console.log('Server started on ${process.env.REACT_APP_API_URL}');
 });
 //
