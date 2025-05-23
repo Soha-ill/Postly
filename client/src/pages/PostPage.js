@@ -15,7 +15,7 @@ export default function PostPage() {
           setPostInfo(postInfo);
         });
       });
-  }, []);
+  }, [id]);
 
   if (!postInfo) return '';
 
@@ -23,8 +23,8 @@ export default function PostPage() {
     <div className="post-page">
       <h1>{postInfo.title}</h1>
       <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
-      <div className="author">by @{postInfo.author.username}</div>
-      {userInfo.id === postInfo.author._id && (
+      <div className="author">by @{postInfo.author?.username || 'Unknown'}</div>
+      {userInfo?.id === postInfo.author?._id && (
         <div className="edit-row">
           <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -35,7 +35,19 @@ export default function PostPage() {
         </div>
       )}
       <div className="image">
-        <img src={`http://localhost:4000/${postInfo.cover}`} alt=""/>
+        <img 
+          src={postInfo.coverUrl || `http://localhost:4000/uploads/${postInfo.cover}`} 
+          alt={postInfo.title}
+          style={{
+            width: '100%',
+            maxHeight: '400px',
+            objectFit: 'contain',
+            marginTop: '20px',
+            marginBottom: '20px',
+            borderRadius: '10px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+          }}
+        />
       </div>
       <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}} />
     </div>
